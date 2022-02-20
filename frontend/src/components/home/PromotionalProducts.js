@@ -5,6 +5,7 @@ import Button from "@material-ui/core/Button"
 import IconButton from "@material-ui/core/IconButton"
 import Carousel from "react-spring-3d-carousel"
 import clsx from "clsx"
+import { useMediaQuery} from '@material-ui/core/useMediaQuery'
 import { useStaticQuery, graphql } from "gatsby"
 import { makeStyles } from "@material-ui/core/styles"
 
@@ -20,6 +21,12 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     height: '70rem',
     padding: '30rem 10rem 10rem 10rem',
+    [theme.breakpoints.down('lg')]: {
+      padding: '20rem 2rem 2rem 2rem'
+    },
+    [theme.breakpoints.down('xs')]: {
+      overflow: 'hidden'
+    }
   },
   productNane: {
     color: '#FFF'
@@ -27,10 +34,14 @@ const useStyles = makeStyles(theme => ({
   iconButton: {
     '&:hover': {
       backgroundColor: 'transparent',
-    },
+    }
   },
   carouselContainer: {
     marginLeft: '20rem',
+    [theme.breakpoints.down('md')]: {
+      marginLeft: 0,
+      height: '30rem'
+    }
   },
   carouselImage: {
     height: '30rem',
@@ -38,23 +49,40 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: '#FFF',
     borderRadius: 20,
     boxShadow: theme.shadows[5],
+    [theme.breakpoints.down('sm')]: {
+      height: '25rem',
+      width: '20rem'
+    },
+    [theme.breakpoints.down('xs')]: {
+      height: '20rem',
+      width: '15rem'
+    }
   },
   space: {
-    margin: '0 15rem',
-    marginBottom: '10rem',
+    margin: '0 15rem 10rem 15rem',
+    [theme.breakpoints.down('sm')]: {
+      margin: '0 8rem 10rem 8rem'
+    },
+    [theme.breakpoints.down('xs')]: {
+      margin: '0 5rem 10rem 5rem'
+    }
   },
   explore:{
     textTransform: 'none',
-    marginRight: '2rem',
+    marginRight: '2rem'
   },
   descriptionContainer: {
     textAlign: 'right',
+    [theme.breakpoints.down('md')]: {
+      textAlign: 'center'
+    }
   }
 }))
 
 export default function PromotionalProducts(){
   const classes = useStyles()
   const [selectedSlide, setSelectedSlide] = useState(0)
+  const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
   const data = useStaticQuery(graphql`
     query GetPromo {
       allStrapiProduct(filter: {promo: {eq: true}}){
@@ -100,8 +128,8 @@ export default function PromotionalProducts(){
   }))
 
   return(
-    <Grid container justify="space-between" alignItems="center"
-    classes={{ root: classes.mainContainer}}>
+    <Grid container justify={matchesMD ? "space-around" : "space-between"} alignItems="center"
+    classes={{ root: classes.mainContainer}} direction={matchesMD ? 'column' : 'row'} >
       <Grid item classes={{ root: classes.carouselContainer}}>
         <Carousel slides={slides} goToSlide={selectedSlide} />
       </Grid>
