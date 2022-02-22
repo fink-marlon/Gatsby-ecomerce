@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
 import clsx from 'clsx'
 import { makeStyles } from '@material-ui/core/styles'
-import {Link} from 'gatsby'
+//import {Link} from 'gatsby'
 
 import address from '../images/address.svg'
 import phone from '../images/phone-adornment.svg'
@@ -36,13 +37,16 @@ const useStyles = makeStyles(theme => ({
     marginTop: '-4rem'
   },
   buttonContainer: {
-    marginBottom: '-4rem'
-  },
-  sendButton: {
-    textTransform: 'none'
+    marginBottom: '-4rem',
+    textTransform: 'none',
+    borderRadius: 0,
+    '&:hover': {
+      backgroundColor: theme.palette.secondary.light
+    }
   },
   sendIcon: {
-    marginLeft: '2rem'
+    marginLeft: '2rem',
+    marginLeft: '1rem'
   },
   contactInfo: {
     fontSize: '1,5rem'
@@ -54,11 +58,55 @@ const useStyles = makeStyles(theme => ({
   contactEmailIcon: {
     height: '2.25rem',
     width: '3rem'
+  },
+  infoContainer: {
+    height: '21.25rem'
+  },
+  middleInfo: {
+    borderTop: '2px solid #FFF',
+    borderBottom: '2px solid #FFF'
+  },
+  iconContainer: {
+    borderLeft: '2px solid #FFF',
+    height: '7rem',
+    width: '8rem',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  textField: {
+    width: '30rem'
+  },
+  input: {
+    color: '#FFF'
+  },
+  fieldContainer: {
+    marginBottom: '1rem'
+  },
+  multilineContainer: {
+    marginTop: '1rem'
+  },
+  '@global': {
+    '.MuiInput=underline:before, .MuiInput=underline:hover:not(.Mui-disabled):before': {
+      borderBottom: '1px solid #FFF'
+    },
+    '.MuiInput-underline:after': {
+      borderBottom: `1px solid ${theme.palette.secondary.main}`
+    },
+    '.Mui-multiline': {
+      border: '2px solid #FFF',
+      borderRadius: '10',
+      padding: '1rem'
+    }
   }
 }))
 
 const ContactPage = () => {
   const classes = useStyles()
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState('')
+  const [message, setMessage] = useState('')
 
   return (
     <Layout >
@@ -69,19 +117,41 @@ const ContactPage = () => {
             <Grid item classes={{ root: clsx(classes.titleContainer, classes.blockContainer)}}>
               <Typography variant='h4'> Contact Us </Typography>
             </Grid>
-            <Grid item classes={{ root: clsx(classes.buttonContainer, classes.blockContainer)}}>
-              <Button classes={{root: classes.sendButton}}>
-                <Typography variant='h4'> Send Message </Typography>
-                <img src={send} alt='send message' className={classes.sendIcon} />
-              </Button>
+            <Grid item >
+              <Grid container direction='column' >
+                <Grid item classes={{ root: classes.fieldContainer}} >
+                  <TextField placeholder='Name' value={name} onChange={(e) => setName(e.target.value)}
+                  classes={{root: classes.textField}} InputProp={{classes: {input: classes.input} }}/>
+                </Grid>
+                <Grid item classes={{ root: classes.fieldContainer}} >
+                  <TextField placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)}
+                  classes={{root: classes.textField}} InputProp={{classes: {input: classes.input} }}/>
+                </Grid>
+                <Grid item classes={{ root: classes.fieldContainer}} >
+                  <TextField placeholder='Phone Number' InputProp={{classes: {input: classes.input} }}
+                  value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} 
+                  classes={{root: classes.textField}} />
+                </Grid>
+                <Grid item classes={{ root: classes.multilineContainer}} >
+                  <TextField placeholder='Message' multiline rows={8}
+                  InputProp={{disableUnderline: true, classes: {input: classes.input} }}
+                  value={message} onChange={(e) => setMessage(e.target.value)}
+                  classes={{root: classes.textField}} />
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item component={Button} classes={{ root: clsx(classes.buttonContainer, classes.blockContainer)}}>
+              <Typography variant='h4'> Send Message </Typography>
+              <img src={send} alt='send message' className={classes.sendIcon} />
             </Grid>
           </Grid>
         </Grid>
          
         <Grid item >
-          <Grid container direction='column' >
+          <Grid container direction='column' justify='space-between'
+          classes={{ root: classes.infoContainer }} >
             <Grid item container alignItems='center' >
-              <Grid item >
+              <Grid item class={{root: classes.iconContainer }}>
                 <img src={address} alt='address' classNme={classes.contactIcon} />
               </Grid>
               <Grid item >
@@ -89,8 +159,8 @@ const ContactPage = () => {
                 address 1234 </Typography>
               </Grid>
             </Grid>
-            <Grid item container alignItems='center' >
-              <Grid item >
+            <Grid item container alignItems='center' classes={{root: classes.middleInfo}} >
+              <Grid item class={{root: classes.iconContainer }}>
                 <img src={phone} alt='phone' classNme={classes.contactIcon} />
               </Grid>
               <Grid item >
@@ -99,7 +169,7 @@ const ContactPage = () => {
               </Grid>
             </Grid>
             <Grid item container alignItems='center' >
-              <Grid item >
+              <Grid item class={{root: classes.iconContainer }}>
                 <img src={email} alt='email' classNme={classes.contactEmailIcon} />
               </Grid>
               <Grid item >
