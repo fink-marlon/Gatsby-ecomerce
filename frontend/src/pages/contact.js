@@ -3,6 +3,7 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
+import InputAdornment from '@material-ui/core/InputAdornment'
 import clsx from 'clsx'
 import { makeStyles } from '@material-ui/core/styles'
 //import {Link} from 'gatsby'
@@ -11,7 +12,9 @@ import address from '../images/address.svg'
 import phone from '../images/phone-adornment.svg'
 import email from '../images/email-adornment.svg'
 import send from '../images/send.svg'
+import nameAdornment from '../images/name-adornment.svg'
 import Layout from "../components/ui/layout"
+import validate from "../components/ui/validate"
 
 const useStyles = makeStyles(theme => ({
   mainContainer: {
@@ -121,14 +124,29 @@ const ContactPage = () => {
               <Grid container direction='column' >
                 <Grid item classes={{ root: classes.fieldContainer}} >
                   <TextField placeholder='Name' value={name} onChange={(e) => setName(e.target.value)}
-                  classes={{root: classes.textField}} InputProp={{classes: {input: classes.input} }}/>
+                  classes={{root: classes.textField}} InputProp={{classes: {input: classes.input}, 
+                  startAdornment: (
+                    <InputAdornment position='start' >
+                      <img src={nameAdornment} alt='name' />
+                    </InputAdornment>
+                  ) }}/>
                 </Grid>
                 <Grid item classes={{ root: classes.fieldContainer}} >
                   <TextField placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)}
-                  classes={{root: classes.textField}} InputProp={{classes: {input: classes.input} }}/>
+                  classes={{root: classes.textField}} InputProp={{classes: {input: classes.input}, 
+                  startAdornment: (
+                    <InputAdornment position='start' >
+                      <img src={email} alt='email' />
+                    </InputAdornment>
+                  ) }}/>
                 </Grid>
                 <Grid item classes={{ root: classes.fieldContainer}} >
-                  <TextField placeholder='Phone Number' InputProp={{classes: {input: classes.input} }}
+                  <TextField placeholder='Phone Number' InputProp={{classes: {input: classes.input}, 
+                  startAdornment: (
+                    <InputAdornment position='start' >
+                      <img src={phone} alt='phone' />
+                    </InputAdornment>
+                  ) }}
                   value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} 
                   classes={{root: classes.textField}} />
                 </Grid>
