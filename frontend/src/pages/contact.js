@@ -135,11 +135,34 @@ const useStyles = makeStyles(theme => ({
 const ContactPage = () => {
   const classes = useStyles()
   const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [phoneNumber, setPhoneNumber] = useState('')
-  const [message, setMessage] = useState('')
+  const [values, setValues] = useState({name: "", email: "", phone: "", message: ""})
   const [errors, setErrors] = useState({})
+  const fields = {
+    name: {
+      helperText: 'You must enter a name',
+      placeholder: 'Name',
+      adornment: <img src={nameAdornment} alt='name' />
+    },
+    email: {
+      helperText: 'Invalid email',
+      placeholder: 'Email',
+      adornment: <img src={email} alt='email' />
+    },
+    phone: {
+      helperText: 'Invalid phone number',
+      placeholder: 'Phone',
+      adornment: <img src={phone} alt='phone' />
+    },
+    message: {
+      helperText: 'You must enter a message',
+      placeholder: 'Message',
+      inputClasses: {
+        multiline: classes.multiline, error: classes.multilineError
+      }
+    }
+  }
+  const disabled = Object.keys(errors).some(error => errors[error] === true)
+   || Object.keys(errors).length !== 4
 
   return (
     <Layout >
@@ -153,79 +176,38 @@ const ContactPage = () => {
             </Grid>
             <Grid item >
               <Grid container direction='column' >
-                <Grid item classes={{ root: classes.fieldContainer}} >
-                  <TextField placeholder='Name' value={name}  classes={{root: classes.textField}}
-                  onChange={(e) => {
-                    if (errors.name){
-                      const valid = validate({name: e.target.value})
-                      setErrors({...errors, name: !valid.name})
-                    }                    
-                    setName(e.target.value)}} onBlur={(e) => {
-                    const valid = validate({name})
-                    setErrors({...errors, name: !valid.name})
-                  }} InputProp={{classes: {input: classes.input}, startAdornment: (
-                    <InputAdornment position='start' >
-                      <img src={nameAdornment} alt='name' />
-                    </InputAdornment>
-                  ) }} error={errors.name} helperText={errors.name && 'You must enter a name'} />
-                </Grid>
-                <Grid item classes={{ root: classes.fieldContainer}} >
-                  <TextField placeholder='Email' value={email} onChange={(e) => {
-                     if (errors.email){
-                      const valid = validate({email: e.target.value})
-                      setErrors({...errors, email: !valid.email})
-                    } 
-                    setEmail(e.target.value)}}
-                  classes={{root: classes.textField}} onBlur={(e) => {
-                    const valid = validate({email})
-                    setErrors({...errors, email: !valid.email})
-                  }} InputProp={{classes: {input: classes.input}, startAdornment: (
-                    <InputAdornment position='start' >
-                      <img src={email} alt='email' />
-                    </InputAdornment>
-                  ) }} error={errors.email} helperText={errors.email && 'Invalid email'} />
-                </Grid>
-                <Grid item classes={{ root: classes.fieldContainer}} >
-                  <TextField placeholder='Phone Number' InputProp={{classes: {input: classes.input}, 
-                  startAdornment: (
-                    <InputAdornment position='start' >
-                      <img src={phone} alt='phone' />
-                    </InputAdornment>
-                  ) }}
-                  value={phoneNumber} onChange={(e) => {
-                    if (errors.phone){
-                      const valid = validate({phone: e.target.value})
-                      setErrors({...errors, phone: !valid.phone})
-                    } 
-                    setPhoneNumber(e.target.value)}} onBlur={(e) => {
-                    const valid = validate({phone})
-                    setErrors({...errors, phone: !valid.phone})
-                  }} classes={{root: classes.textField}} error={errors.phone}
-                   helperText={errors.phone && 'Invalid phone number'} />
-                </Grid>
-                <Grid item classes={{ root: classes.multilineContainer}} >
-                  <TextField placeholder='Message' multiline rows={8}
-                  InputProp={{disableUnderline: true, classes: {input: classes.input,
-                    multiline: classes.multiline, error: classes.multilineError}}}
-                  value={message} onChange={(e) => setMessage(e.target.value)}
-                  classes={{root: classes.textField}} onChange={(e) => {
-                    if (errors.message){
-                      const valid = validate({message: e.target.message})
-                      setErrors({...errors, message: !valid.message})
-                    } 
-                    setPhoneNumber(e.target.value)}}
-                  onBlur={(e) => {
-                    const valid = validate({message})
-                    setErrors({...errors, message: !valid.message})
-                  }} error={errors.message} helperText={errors.message && 'Enter a message'} />
-                </Grid>
+                {Object.keys(fields).map(field => {
+                  const validateHelper = (event) => {
+                    const valid = validate({[field]: event.target[field]})
+                    setErrors({...errors, [field]: !valid[field]})            
+                  }
+
+                  return (
+                    <Grid item classes={{ root: field === 'message' ? classes.multilineContainer
+                      : classes.fieldContainer}} >
+                      <TextField placeholder={fields[field].placeholder} value={values[field]}
+                        classes={{root: classes.textField}} onChange={(e) => {
+                          if (errors[field]){ validateHelper(e) }                    
+                          setValues({...values, [field]: e.target.value})
+                        }}
+                        onBlur={(e) => { validateHelper(e) }} multiline={field === 'message'}
+                        rows={field === 'message' ? 8 : undefined}
+                        error={errors[field]} helperText={errors[field] && fields[field].helperText}
+                        InputProp={{classes: {input: classes.input, ...fields[field].inputClasses},
+                        disabledUnderline: field === 'message', startAdornment: (
+                          <InputAdornment position='start' >
+                            {fields[field].adornment}
+                          </InputAdornment>
+                        )
+                      }} />
+                    </Grid>
+                  )
+                })} 
               </Grid>
             </Grid>
-            <Grid item component={Button} disabled={Object.keys(errors).some(error => errors[error]
-            === true) || Object.keys(errors).length !== 4}
+            <Grid item component={Button} disabled={disabled}
             classes={{ root: clsx(classes.buttonContainer, classes.blockContainer, {
-              [classes.buttonDisabled]: Object.keys(errors).some(error => errors[error]
-              === true) || Object.keys(errors).length !== 4}
+              [classes.buttonDisabled]: disabled}
             )}}>
               <Typography variant='h4'> Send Message </Typography>
               <img src={send} alt='send message' className={classes.sendIcon} />
