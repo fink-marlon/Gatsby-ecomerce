@@ -10,69 +10,76 @@ import cta from "../../images/cta.svg"
 
 const useStyles = makeStyles(theme => ({
   account: {
-    color: '#FFF',
-    marginLeft: '3rem'
+    color: "#fff",
+    marginLeft: "2rem",
   },
   body: {
-    maxWidth: '45rem',
-    [theme.breakpoints.down('md')]: {
-      padding: '0 1rem'
+    maxWidth: "45rem",
+    [theme.breakpoints.down("md")]: {
+      padding: "0 1rem",
     },
-    [theme.breakpoints.down('xs')]: {
-      padding: '0'
-    }
+    [theme.breakpoints.down("xs")]: {
+      padding: "0",
+    },
   },
   container: {
-    marginBottom: '15rem'
+    marginBottom: "15rem",
   },
   buttonContainer: {
-    marginTop: '3rem'
+    marginTop: "3rem",
   },
   headingContainer: {
-    [theme.breakpoints.down('md')]: {
-      padding: '0 1rem'
+    [theme.breakpoints.down("md")]: {
+      padding: "0 1rem",
     },
-    [theme.breakpoints.down('xs')]: {
-      padding: '0'
-    }
+    [theme.breakpoints.down("xs")]: {
+      padding: "0",
+    },
   },
   icon: {
-    [theme.breakpoints.down('xs')]: {
-      height: '18rem',
-      width: '20rem'
-    }
-  }
+    [theme.breakpoints.down("xs")]: {
+      height: "18rem",
+      width: "20rem",
+    },
+  },
 }))
 
-export default function CallToAction(){
+export default function CallToAction() {
   const classes = useStyles()
   const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
 
-  return(
-    <Grid container justify='space-around' alignItems='center' classes={{root: classes.container}}
-    direction={matchesMD ? 'column' : 'row'} >
-      <Grid item > 
-        <img src={cta} alt='Quality Committed' className={classes.icon} />
+  return (
+    <Grid container justify="space-around" alignItems="center"
+      classes={{ root: classes.container }} direction={matchesMD ? "column" : "row"}>
+      <Grid item>
+        <img src={cta} className={classes.icon} alt="quality committed" />
       </Grid>
-      <Grid item >
-        <Grid container direction='column' >
-          <Grid item classes={{ root: classes.headingContainer}}>
-            <Typography variant='h1' align={matchesMD ? 'center' : undefined} >
-            Committed To Quality </Typography>
+      <Grid item>
+        <Grid container direction="column">
+          <Grid item classes={{ root: classes.headingContainer }}>
+            <Typography align={matchesMD ? "center" : undefined} variant="h1">
+              Committed To Quality
+            </Typography>
           </Grid>
-          <Grid item classes={{ root: classes.body}}>
-            <Typography variant='body1' align={matchesMD ? 'center' : undefined} >
-            At VAR X we are compromised with ...</Typography>
+          <Grid item classes={{ root: classes.body }}>
+            <Typography align={matchesMD ? "center" : undefined} variant="body1">
+              At VAR X our mission is to provide comfortable, durable, premium,
+              designer clothing and clothing accessories to developers and
+              technology enthusiasts.
+            </Typography>
           </Grid>
-          <Grid item container justify={matchesMD ? 'center' : undefined}
-          classes={{ root: classes.buttonContainer}} >
-            <Grid item >
-              <Button variant='outlined' color='primary' component={Link} to={'/contact'} >
-              Contact Us </Button>
+          <Grid item container justify={matchesMD ? "center" : undefined}
+          classes={{ root: classes.buttonContainer }} >
+            <Grid item>
+              <Button component={Link} to="/contact" variant="outlined" color="primary">
+                Contact Us
+              </Button>
             </Grid>
-            <Grid item >
-              <Button variant='contained' color='primary' classes={{root: classes.account}}
-              component={Link} to={'/account'} > Create Account </Button>
+            <Grid item>
+              <Button variant="contained" color="primary" component={Link}
+                to="/account" classes={{ root: classes.account }}>
+                Create Account
+              </Button>
             </Grid>
           </Grid>
         </Grid>

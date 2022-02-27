@@ -1,11 +1,4 @@
-/**
- * Layout component that queries for data
- * with Gatsby's useStaticQuery component
- *
- * See: https://www.gatsbyjs.com/docs/use-static-query/
- */
-
-import * as React from "react"
+import React from "react"
 import { useStaticQuery, graphql } from "gatsby"
 import { makeStyles } from "@material-ui/core/styles"
 
@@ -14,12 +7,13 @@ import Footer from "./footer"
 
 const useStyles = makeStyles(theme => ({
   spacer: {
-    marginBottom: '10rem',
-    [theme.breakpoints.down('md')]: {
-      marginBottom: '2rem',
-    }
-  }
+    marginBottom: "10rem",
+    [theme.breakpoints.down("md")]: {
+      marginBottom: "2rem",
+    },
+  },
 }))
+
 const Layout = ({ children }) => {
   const classes = useStyles()
   const data = useStaticQuery(graphql`
@@ -40,7 +34,7 @@ const Layout = ({ children }) => {
       <Header categories={data.allStrapiCategory.edges} />
       <div className={classes.spacer} />
       <main>{children}</main>
-      <Footer/>
+      <Footer />
     </>
   )
 }
